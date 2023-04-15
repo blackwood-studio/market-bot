@@ -1,0 +1,19 @@
+{
+  "name": "market-bot",
+  "version": "1.0.0",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "node .",
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.5",
+    "discord.js": "^14.8.0",
+    "dotenv": "^16.0.3",
+    "tslog": "^4.8.2"
+  }
+}
