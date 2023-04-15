@@ -41,7 +41,6 @@ export function has_not_enough_items(bundle: Bundle, items_amount: number): bool
 }
 
 export function is_not_owner_of_project(user: CustomUser, ticker: string): boolean {
-    console.log(bundle_market.projects.get(ticker)?.owners_credentials.get(user.id));
     return bundle_market.projects.get(ticker)?.owners_credentials.get(user.id) === undefined;
 }
 
