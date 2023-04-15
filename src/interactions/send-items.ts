@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { bundle_market, logger } from '../static';
-import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_source_target, is_user_bot } from '../general/validator';
+import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_source_target, is_ticker_invalid, is_user_bot } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 import { load_bundle } from '../general/load-bundle';
 import { show_success } from '../embeds/show-success';
@@ -27,6 +27,14 @@ export function send_items(interaction: ChatInputCommandInteraction): EmbedBuild
         return show_error(
             `Option 'target' is invalid`,
             `Cannot choose yourself as 'target'`
+        );
+    }
+
+    if (is_ticker_invalid(ticker)) {
+        logger.error(`New send item request ... FAILED`);
+        return show_error(
+            `Option 'ticker' is invalid`,
+            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
         );
     }
 

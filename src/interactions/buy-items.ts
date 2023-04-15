@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { bundle_market, logger, users } from '../static';
-import { does_not_project_exists, has_not_enough_money, is_source_target, is_user_bot, items_are_not_for_sale } from '../general/validator';
+import { does_not_project_exists, has_not_enough_money, is_source_target, is_ticker_invalid, is_user_bot, items_are_not_for_sale } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 import { show_success } from '../embeds/show-success';
 import { load_bundle } from '../general/load-bundle';
@@ -14,6 +14,14 @@ export function buy_items(interaction: ChatInputCommandInteraction): EmbedBuilde
     const source_bundle = load_bundle(source, ticker);
     const target_bundle = load_bundle(target, ticker);
     const price = round_number(target_bundle.price_per_item * target_bundle.items_amount_for_sale);
+
+    if (is_ticker_invalid(ticker)) {
+        logger.error(`New buy item request ... FAILED`);
+        return show_error(
+            `Option 'ticker' is invalid`,
+            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
+        );
+    }
 
     if (is_user_bot(target)) {
         logger.error(`New buy item request ... FAILED`);
