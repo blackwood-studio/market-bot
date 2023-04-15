@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { bundle_market, logger } from '../static';
 import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_user_bot } from '../general/validator';
+import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_ticker_invalid, is_user_bot } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 import { load_project } from '../general/load-project';
 
@@ -11,6 +11,14 @@ export function add_owner(interaction: ChatInputCommandInteraction): EmbedBuilde
     const target = load_user(interaction.options.getUser('target'));
     const ticker = interaction.options.getString('ticker');
     const project = load_project(source, ticker);
+
+    if (is_ticker_invalid(ticker)) {
+        logger.error(`New add owner request ... FAILED`);
+        return show_error(
+            `Option 'ticker' is invalid`,
+            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
+        );
+    }
 
     if (is_user_bot(target)) {
         logger.error(`New add owner request ... FAILED`);

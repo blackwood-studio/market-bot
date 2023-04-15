@@ -3,13 +3,21 @@ import { load_user } from '../general/load-user';
 import { bundle_market, logger } from '../static';
 import { load_bundle } from '../general/load-bundle';
 import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, items_are_not_for_sale } from '../general/validator';
+import { does_not_project_exists, is_ticker_invalid, items_are_not_for_sale } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 
 export function cancel_sale(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const user = load_user(interaction.user);
     const ticker = interaction.options.getString('ticker');
     const user_bundle = load_bundle(user, ticker);
+
+    if (is_ticker_invalid(ticker)) {
+        logger.error(`New cancel sale request ... FAILED`);
+        return show_error(
+            `Option 'ticker' is invalid`,
+            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
+        );
+    }
 
     if (does_not_project_exists(ticker)) {
         logger.error(`New cancel sale request ... FAILED`);

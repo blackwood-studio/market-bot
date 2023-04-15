@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { bundle_market, logger } from '../static';
-import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_money_amount_invalid, items_are_for_sale } from '../general/validator';
+import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_money_amount_invalid, is_ticker_invalid, items_are_for_sale } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 import { load_bundle } from '../general/load-bundle';
 import { show_success } from '../embeds/show-success';
@@ -12,6 +12,14 @@ export function sell_items(interaction: ChatInputCommandInteraction): EmbedBuild
     const items_amount = interaction.options.getInteger('items_amount');
     const price_per_item = interaction.options.getNumber('price_per_item');
     const user_bundle = load_bundle(user, ticker);
+
+    if (is_ticker_invalid(ticker)) {
+        logger.error(`New sell items request ... FAILED`);
+        return show_error(
+            `Option 'ticker' is invalid`,
+            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
+        );
+    }
 
     if (is_items_amount_invalid(items_amount)) {
         logger.error(`New sell items request ... FAILED`);
