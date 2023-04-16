@@ -1,11 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { bundle_market, logger } from '../static';
-import { load_user } from '../general/load-user';
-import { show_success } from '../embeds/show-success';
-import { does_project_exists } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { load_bundle } from '../general/load-bundle';
-import { load_project } from '../general/load-project';
+import { bundles, logger, projects } from '../static.js';
+import { load_user } from '../general/load-user.js';
+import { show_success } from '../embeds/show-success.js';
+import { does_project_exists } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { load_bundle } from '../general/load-bundle.js';
+import { load_project } from '../general/load-project.js';
 
 export function create_project(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const user = load_user(interaction.user);
@@ -23,8 +23,8 @@ export function create_project(interaction: ChatInputCommandInteraction): EmbedB
 
     user_bundle.items_amount = Number(process.env.START_ITEMS_AMOUNT);
 
-    bundle_market.projects.set(ticker, project);
-    bundle_market.bundles.set(`${user.id}::${ticker}`, user_bundle);
+    projects.set(ticker, project);
+    bundles.set(`${user.id}::${ticker}`, user_bundle);
 
     logger.info(`New create project request ... SUCCESS`);
     return show_success(`Project has successfully been created`);

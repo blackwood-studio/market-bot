@@ -1,11 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { bundle_market, logger, users } from '../static';
-import { does_not_project_exists, has_not_enough_money, is_source_target, is_user_bot, items_are_not_for_sale } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { show_success } from '../embeds/show-success';
-import { load_bundle } from '../general/load-bundle';
-import { round_number } from '../general/round';
+import { load_user } from '../general/load-user.js';
+import { bundles, logger, users } from '../static.js';
+import { does_not_project_exists, has_not_enough_money, is_source_target, is_user_bot, items_are_not_for_sale } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { show_success } from '../embeds/show-success.js';
+import { load_bundle } from '../general/load-bundle.js';
+import { round_number } from '../general/round.js';
 
 export function buy_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const source = load_user(interaction.user);
@@ -63,8 +63,8 @@ export function buy_items(interaction: ChatInputCommandInteraction): EmbedBuilde
 
     target_bundle.items_amount_for_sale = 0;
 
-    bundle_market.bundles.set(`${source.id}::${ticker}`, source_bundle);
-    bundle_market.bundles.set(`${target.id}::${ticker}`, target_bundle);
+    bundles.set(`${source.id}::${ticker}`, source_bundle);
+    bundles.set(`${target.id}::${ticker}`, target_bundle);
 
     users.set(source.id, source);
     users.set(target.id, target);

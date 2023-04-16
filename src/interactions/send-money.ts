@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { logger, users } from '../static';
-import { has_not_enough_money, is_money_amount_invalid, is_source_target, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { round_number } from '../general/round';
-import { show_success } from '../embeds/show-success';
+import { load_user } from '../general/load-user.js';
+import { logger, users } from '../static.js';
+import { has_not_enough_money, is_money_amount_invalid, is_source_target, is_user_bot } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { round_number } from '../general/round.js';
+import { show_success } from '../embeds/show-success.js';
 
 export function send_money(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const source = load_user(interaction.user);

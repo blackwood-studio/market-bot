@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { bundle_market, logger } from '../static';
-import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { load_project } from '../general/load-project';
+import { load_user } from '../general/load-user.js';
+import { logger, projects } from '../static.js';
+import { show_success } from '../embeds/show-success.js';
+import { does_not_project_exists, is_not_owner_of_project } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { load_project } from '../general/load-project.js';
 
 export function leave_project(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const user = load_user(interaction.user);
@@ -28,7 +28,7 @@ export function leave_project(interaction: ChatInputCommandInteraction): EmbedBu
     }
 
     project.owners_credentials.delete(user.id);
-    bundle_market.projects.set(ticker, project);
+    projects.set(ticker, project);
 
     logger.info(`New leave project request ... SUCCESS`);
     return show_success(`Owner has successfully been added`);

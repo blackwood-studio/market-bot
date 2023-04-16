@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
-import { BundleTables } from '../tables/bundles-table';
-import { ProjectTable } from '../tables/project-table';
+import { BundleTables } from '../tables/bundles-table.js';
+import { ProjectTable } from '../tables/project-table.js';
 
 export function show_projects_overview(project_table: ProjectTable): EmbedBuilder {
     return new EmbedBuilder()

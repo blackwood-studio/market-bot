@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
-import { BundleTables } from '../tables/bundles-table';
+import { BundleTables } from '../tables/bundles-table.js';
 
 export function show_sales_info(bundles_table: BundleTables): EmbedBuilder {
     return new EmbedBuilder()

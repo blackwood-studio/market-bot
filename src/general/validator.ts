@@ -1,8 +1,6 @@
-import { CustomUser } from '../custom/custom-user';
-import { Bundle } from '../interfaces/bundle';
-import { Credentials } from '../interfaces/credentials';
-import { Project } from '../interfaces/project';
-import { bundle_market } from '../static';
+import { CustomUser } from '../custom/custom-user.js';
+import { Bundle } from '../interfaces/bundle.js';
+import { projects } from '../static.js';
 
 export function is_user_bot(user: CustomUser): boolean {
     return user.bot;
@@ -41,13 +39,13 @@ export function has_not_enough_items(bundle: Bundle, items_amount: number): bool
 }
 
 export function is_not_owner_of_project(user: CustomUser, ticker: string): boolean {
-    return bundle_market.projects.get(ticker)?.owners_credentials.get(user.id) === undefined;
+    return projects.get(ticker)?.owners_credentials.get(user.id) === undefined;
 }
 
 export function does_project_exists(ticker: string): boolean {
-    return bundle_market.projects.get(ticker) !== undefined;
+    return projects.get(ticker) !== undefined;
 }
 
 export function does_not_project_exists(ticker: string): boolean {
-    return bundle_market.projects.get(ticker) === undefined;
+    return projects.get(ticker) === undefined;
 }

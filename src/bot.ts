@@ -13,19 +13,19 @@ import {
     SlashCommandUserOption 
 } from 'discord.js';
 
-import { logger, market } from './static';
-import { user_info } from './interactions/user-info';
-import { send_money } from './interactions/send-money';
-import { send_items } from './interactions/send-items';
-import { buy_items } from './interactions/buy-items';
-import { sell_items } from './interactions/sell-items';
-import { sales_info } from './interactions/sales-info';
-import { cancel_sale } from './interactions/cancel-sale';
-import { add_items } from './interactions/add-items';
-import { project_overview } from './interactions/project-overview';
-import { create_project } from './interactions/create-project';
-import { add_owner } from './interactions/add-owner';
-import { leave_project } from './interactions/leave-project';
+import { logger, market } from './static.js';
+import { user_info } from './interactions/user-info.js';
+import { send_money } from './interactions/send-money.js';
+import { send_items } from './interactions/send-items.js';
+import { buy_items } from './interactions/buy-items.js';
+import { sell_items } from './interactions/sell-items.js';
+import { sales_info } from './interactions/sales-info.js';
+import { cancel_sale } from './interactions/cancel-sale.js';
+import { add_items } from './interactions/add-items.js';
+import { project_overview } from './interactions/project-overview.js';
+import { create_project } from './interactions/create-project.js';
+import { add_owner } from './interactions/add-owner.js';
+import { leave_project } from './interactions/leave-project.js';
 
 const commands = [
     new SlashCommandBuilder()

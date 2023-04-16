@@ -1,10 +1,10 @@
-import { bundle_market } from '../static';
-import { CustomUser } from '../custom/custom-user';
-import { Project } from '../interfaces/project';
-import { CustomMap } from '../custom/custom-map';
+import { projects } from '../static.js';
+import { CustomUser } from '../custom/custom-user.js';
+import { Project } from '../interfaces/project.js';
+import { CustomMap } from '../custom/custom-map.js';
 
 export function load_project(owner: CustomUser, ticker: string): Project {
-    return bundle_market.projects.get(ticker) || {
+    return projects.get(ticker) || {
         ticker,
         owners_credentials: new CustomMap([[ 
             owner.id, 

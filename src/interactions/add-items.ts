@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { bundle_market, logger } from '../static';
-import { load_bundle } from '../general/load-bundle';
-import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, is_items_amount_invalid, is_not_owner_of_project } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { load_user } from '../general/load-user.js';
+import { bundles, logger } from '../static.js';
+import { load_bundle } from '../general/load-bundle.js';
+import { show_success } from '../embeds/show-success.js';
+import { does_not_project_exists, is_items_amount_invalid, is_not_owner_of_project } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
 
 export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const user = load_user(interaction.user);
@@ -37,7 +37,7 @@ export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilde
     }
 
     user_bundle.items_amount += items_amount;
-    bundle_market.bundles.set(`${user.id}::${ticker}`, user_bundle);
+    bundles.set(`${user.id}::${ticker}`, user_bundle);
 
     logger.info(`New add items request ... SUCCESS`);
     return show_success(`Amout of items has successfully been increased`);

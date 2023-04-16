@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { bundle_market, logger } from '../static';
-import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { load_project } from '../general/load-project';
+import { load_user } from '../general/load-user.js';
+import { logger, projects } from '../static.js';
+import { show_success } from '../embeds/show-success.js';
+import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_user_bot } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { load_project } from '../general/load-project.js';
 
 export function add_owner(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const source = load_user(interaction.user);
@@ -45,7 +45,7 @@ export function add_owner(interaction: ChatInputCommandInteraction): EmbedBuilde
     }
 
     project.owners_credentials.set(target.id, target.get_credentials());
-    bundle_market.projects.set(ticker, project);
+    projects.set(ticker, project);
 
     logger.info(`New add owner request ... SUCCESS`);
     return show_success(`Owner has successfully been added`);

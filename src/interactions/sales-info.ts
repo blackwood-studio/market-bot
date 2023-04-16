@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { logger } from '../static';
-import { bundles_to_table } from '../tables/bundles-table';
-import { load_bundles } from '../general/load-bundle';
-import { show_sales_info } from '../embeds/show-sales-info';
-import { does_not_project_exists } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { logger } from '../static.js';
+import { bundles_to_table } from '../tables/bundles-table.js';
+import { load_bundles } from '../general/load-bundle.js';
+import { show_sales_info } from '../embeds/show-sales-info.js';
+import { does_not_project_exists } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
 
 export function sales_info(interaction: ChatInputCommandInteraction): EmbedBuilder {
     const ticker = interaction.options.getString('ticker');
