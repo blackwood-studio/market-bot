@@ -21,7 +21,7 @@ export async function load_bundles(filter: Filter): Promise<Bundle[]> {
 export async function load_bundle(owner: CustomUser, ticker: string): Promise<Bundle> {
     return await bundles.get(`${owner.id}::${ticker}`) || {
         ticker,
-        owner_credentials: owner.get_credentials(),
+        owner_credentials: owner.credentials,
         items_amount: 0,
         price_per_item: 0.00,
         items_amount_for_sale: 0

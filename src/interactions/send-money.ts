@@ -6,9 +6,9 @@ import { show_error } from '../embeds/show-error.js';
 import { round_number } from '../general/round.js';
 import { show_success } from '../embeds/show-success.js';
 
-export function send_money(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const source = load_user(interaction.user);
-    const target = load_user(interaction.options.getUser('target'));
+export async function send_money(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const source = await load_user(interaction.user);
+    const target = await load_user(interaction.options.getUser('target'));
     const money_amount = interaction.options.getNumber('money_amount');
 
     if (is_user_bot(target)) {
@@ -46,8 +46,8 @@ export function send_money(interaction: ChatInputCommandInteraction): EmbedBuild
     source.money_amount = round_number(source.money_amount - money_amount);
     target.money_amount = round_number(target.money_amount + money_amount);
 
-    users.set(source.id, source);
-    users.set(target.id, target);
+    await users.set(source.id, source);
+    await users.set(target.id, target);
 
     logger.info(`New send money request ... SUCCESS`);
     return show_success(`Money has successfully been sent`);

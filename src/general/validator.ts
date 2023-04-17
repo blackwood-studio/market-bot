@@ -38,14 +38,14 @@ export function has_not_enough_items(bundle: Bundle, items_amount: number): bool
     return bundle.items_amount - bundle.items_amount_for_sale - items_amount < 0;
 }
 
-export function is_not_owner_of_project(user: CustomUser, ticker: string): boolean {
-    return projects.get(ticker)?.owners_credentials.get(user.id) === undefined;
+export async function is_not_owner_of_project(user: CustomUser, ticker: string): Promise<boolean> {
+    return (await projects.get(ticker))?.owners_credentials.get(user.id) === undefined;
 }
 
-export function does_project_exists(ticker: string): boolean {
-    return projects.get(ticker) !== undefined;
+export async function does_project_exists(ticker: string): Promise<boolean> {
+    return await projects.get(ticker) !== null;
 }
 
-export function does_not_project_exists(ticker: string): boolean {
-    return projects.get(ticker) === undefined;
+export async function does_not_project_exists(ticker: string): Promise<boolean> {
+    return await projects.get(ticker) === null;
 }

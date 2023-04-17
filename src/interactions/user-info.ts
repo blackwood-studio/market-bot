@@ -7,9 +7,9 @@ import { is_user_bot } from '../general/validator.js';
 import { bundles_to_table } from '../tables/bundles-table.js';
 import { load_bundles } from '../general/load-bundle.js';
 
-export function user_info(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const target = load_user(interaction.options.getUser('target'));
-    const bundles = load_bundles({ owner_id: target.id });
+export async function user_info(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const target = await load_user(interaction.options.getUser('target'));
+    const bundles = await load_bundles({ owner_id: target.id });
 
     if (is_user_bot(target)) {
         logger.error(`New user info request ... FAILED`);

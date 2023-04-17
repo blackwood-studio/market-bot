@@ -6,12 +6,12 @@ import { show_error } from '../embeds/show-error.js';
 import { load_bundle } from '../general/load-bundle.js';
 import { show_success } from '../embeds/show-success.js';
 
-export function sell_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const user = load_user(interaction.user);
+export async function sell_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const user = await load_user(interaction.user);
     const ticker = interaction.options.getString('ticker');
     const items_amount = interaction.options.getInteger('items_amount');
     const price_per_item = interaction.options.getNumber('price_per_item');
-    const user_bundle = load_bundle(user, ticker);
+    const user_bundle = await load_bundle(user, ticker);
 
     if (is_items_amount_invalid(items_amount)) {
         logger.error(`New sell items request ... FAILED`);
@@ -56,7 +56,7 @@ export function sell_items(interaction: ChatInputCommandInteraction): EmbedBuild
     user_bundle.items_amount_for_sale = items_amount;
     user_bundle.price_per_item = price_per_item;
     
-    bundles.set(`${user.id}::${ticker}`, user_bundle);
+    await bundles.set(`${user.id}::${ticker}`, user_bundle);
 
     logger.info(`New sell items request ... SUCCESS`);
     return show_success(`Sale has successfully been posted`);

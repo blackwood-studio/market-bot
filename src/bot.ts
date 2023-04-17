@@ -181,32 +181,32 @@ export class Bot {
         })
     }
 
-    private handle_interaction(interaction: ChatInputCommandInteraction): EmbedBuilder {
+    private async handle_interaction(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
         switch (interaction.commandName) {
             case 'user_info':
-                return user_info(interaction);
+                return await user_info(interaction);
             case 'sales_info':
-                return sales_info(interaction);
+                return await sales_info(interaction);
             case 'project_overview':
-                return project_overview();
+                return await project_overview();
             case 'create_project':
-                return create_project(interaction);
+                return await create_project(interaction);
             case 'add_owner':
                 return add_owner(interaction);
             case 'leave_project':
-                return leave_project(interaction);
+                return await leave_project(interaction);
             case 'send_money':
-                return send_money(interaction);
+                return await send_money(interaction);
             case 'send_items':
-                return send_items(interaction);
+                return await send_items(interaction);
             case 'sell_items':
-                return sell_items(interaction);
+                return await sell_items(interaction);
             case 'cancel_sale':
-                return cancel_sale(interaction);
+                return await cancel_sale(interaction);
             case 'buy_items':
-                return buy_items(interaction);
+                return await buy_items(interaction);
             case 'add_items':
-                return add_items(interaction);
+                return await add_items(interaction);
         }
     }
 
@@ -218,9 +218,9 @@ export class Bot {
             market.start();
         });
 
-        this.client.on(Events.InteractionCreate, (interaction: ChatInputCommandInteraction) => {
+        this.client.on(Events.InteractionCreate, async (interaction: ChatInputCommandInteraction) => {
             interaction.reply({
-                embeds: [ this.handle_interaction(interaction) ]
+                embeds: [ await this.handle_interaction(interaction) ]
             });
         });
         

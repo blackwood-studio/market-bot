@@ -6,9 +6,9 @@ import { show_sales_info } from '../embeds/show-sales-info.js';
 import { does_not_project_exists } from '../general/validator.js';
 import { show_error } from '../embeds/show-error.js';
 
-export function sales_info(interaction: ChatInputCommandInteraction): EmbedBuilder {
+export async function sales_info(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const ticker = interaction.options.getString('ticker');
-    const bundles = load_bundles({ 
+    const bundles = await load_bundles({ 
         ticker, 
         only_for_sale: true 
     });

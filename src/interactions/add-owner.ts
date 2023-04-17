@@ -6,11 +6,11 @@ import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_
 import { show_error } from '../embeds/show-error.js';
 import { load_project } from '../general/load-project.js';
 
-export function add_owner(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const source = load_user(interaction.user);
-    const target = load_user(interaction.options.getUser('target'));
+export async function add_owner(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const source = await load_user(interaction.user);
+    const target = await load_user(interaction.options.getUser('target'));
     const ticker = interaction.options.getString('ticker');
-    const project = load_project(source, ticker);
+    const project = await load_project(source, ticker);
 
     if (is_user_bot(target)) {
         logger.error(`New add owner request ... FAILED`);
@@ -44,8 +44,8 @@ export function add_owner(interaction: ChatInputCommandInteraction): EmbedBuilde
         );
     }
 
-    project.owners_credentials.set(target.id, target.get_credentials());
-    projects.set(ticker, project);
+    project.owners_credentials.set(target.id, target.credentials);
+    await projects.set(ticker, project);
 
     logger.info(`New add owner request ... SUCCESS`);
     return show_success(`Owner has successfully been added`);

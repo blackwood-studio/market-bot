@@ -7,12 +7,12 @@ import { show_success } from '../embeds/show-success.js';
 import { load_bundle } from '../general/load-bundle.js';
 import { round_number } from '../general/round.js';
 
-export function buy_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const source = load_user(interaction.user);
-    const target = load_user(interaction.options.getUser('target'));
+export async function buy_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const source = await load_user(interaction.user);
+    const target = await load_user(interaction.options.getUser('target'));
     const ticker = interaction.options.getString('ticker');
-    const source_bundle = load_bundle(source, ticker);
-    const target_bundle = load_bundle(target, ticker);
+    const source_bundle = await load_bundle(source, ticker);
+    const target_bundle = await load_bundle(target, ticker);
     const price = round_number(target_bundle.price_per_item * target_bundle.items_amount_for_sale);
 
     if (is_user_bot(target)) {
@@ -63,11 +63,11 @@ export function buy_items(interaction: ChatInputCommandInteraction): EmbedBuilde
 
     target_bundle.items_amount_for_sale = 0;
 
-    bundles.set(`${source.id}::${ticker}`, source_bundle);
-    bundles.set(`${target.id}::${ticker}`, target_bundle);
+    await bundles.set(`${source.id}::${ticker}`, source_bundle);
+    await bundles.set(`${target.id}::${ticker}`, target_bundle);
 
-    users.set(source.id, source);
-    users.set(target.id, target);
+    await users.set(source.id, source);
+    await users.set(target.id, target);
 
     logger.info(`New send money request ... SUCCESS`);
     return show_success(`Purchase was successful`);
