@@ -1,5 +1,4 @@
 import { Logger } from 'tslog';
-import { CustomMap } from './custom/custom-map.js';
 import { CustomUser } from './custom/custom-user.js';
 import { Market } from './market.js';
 import { Bundle } from './interfaces/bundle.js';
@@ -17,8 +16,8 @@ export const client = createClient({
 
 await client.connect();
 
-export const users: RedisClient<string, CustomUser> = new RedisClient('users');
-export const projects: RedisClient<string, Project> = new RedisClient('projects');
-export const bundles: RedisClient<string, Bundle> = new RedisClient('bundles');
+export const users: RedisClient<CustomUser> = new RedisClient('users');
+export const projects: RedisClient<Project> = new RedisClient('projects');
+export const bundles: RedisClient<Bundle> = new RedisClient('bundles');
 
 export const market = new Market();

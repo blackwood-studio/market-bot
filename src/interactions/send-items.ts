@@ -38,7 +38,7 @@ export async function send_items(interaction: ChatInputCommandInteraction): Prom
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New send items request ... FAILED`);
         return show_error(
             `Project does not exists`,

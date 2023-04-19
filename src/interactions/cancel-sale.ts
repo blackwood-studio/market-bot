@@ -11,7 +11,7 @@ export async function cancel_sale(interaction: ChatInputCommandInteraction): Pro
     const ticker = interaction.options.getString('ticker');
     const user_bundle = await load_bundle(user, ticker);
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New cancel sale request ... FAILED`);
         return show_error(
             `Project does not exists`,

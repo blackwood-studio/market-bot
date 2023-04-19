@@ -31,7 +31,7 @@ export async function buy_items(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
             `Project does not exists`,

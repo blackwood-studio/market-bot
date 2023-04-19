@@ -1,3 +1,4 @@
+import { Credentials } from '../interfaces/credentials.js';
 import { Project } from '../interfaces/project.js';
 
 export interface ProjectTable {
@@ -16,7 +17,9 @@ export function projects_to_table(projects: Project[]): ProjectTable {
     })
 
     projects.forEach((project: Project) => {
-        const owners_usernames = project.owners_credentials.as_array().map(c => c.username).toString();
+        const owners_usernames = Object.values(project.owners_credentials)
+        .map((credentials: Credentials) => credentials.username).toString();
+        
         project_table.tickers += `\`\`\` ${project.ticker} \`\`\``;
         project_table.owners_usernames += `\`\`\` ${owners_usernames} \`\`\``;
     });

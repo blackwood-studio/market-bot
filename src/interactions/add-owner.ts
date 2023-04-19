@@ -28,7 +28,7 @@ export async function add_owner(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -36,7 +36,7 @@ export async function add_owner(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    if (is_not_owner_of_project(source, ticker)) {
+    if (await is_not_owner_of_project(source, ticker)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
             `Missing owner rights`,
@@ -44,7 +44,7 @@ export async function add_owner(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    project.owners_credentials.set(target.id, target.credentials);
+    project.owners_credentials[target.id] = target.credentials;
     await projects.set(ticker, project);
 
     logger.info(`New add owner request ... SUCCESS`);

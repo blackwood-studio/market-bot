@@ -13,7 +13,7 @@ export async function sales_info(interaction: ChatInputCommandInteraction): Prom
         only_for_sale: true 
     });
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New sales info request ... FAILED`);
         return show_error(
             `Project does not exists`,

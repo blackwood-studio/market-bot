@@ -11,7 +11,7 @@ export async function leave_project(interaction: ChatInputCommandInteraction): P
     const ticker = interaction.options.getString('ticker');
     const project = await load_project(user, ticker);
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New leave project request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -19,7 +19,7 @@ export async function leave_project(interaction: ChatInputCommandInteraction): P
         );
     }
 
-    if (is_not_owner_of_project(user, ticker)) {
+    if (await is_not_owner_of_project(user, ticker)) {
         logger.error(`New leave project request ... FAILED`);
         return show_error(
             `Missing owner rights`,
@@ -27,7 +27,7 @@ export async function leave_project(interaction: ChatInputCommandInteraction): P
         );
     }
 
-    project.owners_credentials.delete(user.id);
+    project.owners_credentials[user.id] = undefined;
     await projects.set(ticker, project);
 
     logger.info(`New leave project request ... SUCCESS`);

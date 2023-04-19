@@ -20,7 +20,7 @@ export async function add_items(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New add items request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -28,7 +28,7 @@ export async function add_items(interaction: ChatInputCommandInteraction): Promi
         );
     }
 
-    if (is_not_owner_of_project(user, ticker)) {
+    if (await is_not_owner_of_project(user, ticker)) {
         logger.error(`New add items request ... FAILED`);
         return show_error(
             `Missing owner rights`,

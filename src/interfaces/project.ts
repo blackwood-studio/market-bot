@@ -3,5 +3,5 @@ import { Credentials } from './credentials.js';
 
 export interface Project {
     ticker: string,
-    owners_credentials: CustomMap<string, Credentials>
+    owners_credentials: CustomMap<Credentials>
 }
