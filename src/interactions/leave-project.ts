@@ -6,10 +6,10 @@ import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_
 import { show_error } from '../embeds/show-error';
 import { load_project } from '../general/load-project';
 
-export function leave_project(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const user = load_user(interaction.user);
+export async function leave_project(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const user = await load_user(interaction.user);
     const ticker = interaction.options.getString('ticker');
-    const project = load_project(user, ticker);
+    const project = await load_project(user, ticker);
 
     if (is_ticker_invalid(ticker)) {
         logger.error(`New leave project request ... FAILED`);
@@ -19,7 +19,7 @@ export function leave_project(interaction: ChatInputCommandInteraction): EmbedBu
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New leave project request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -27,7 +27,7 @@ export function leave_project(interaction: ChatInputCommandInteraction): EmbedBu
         );
     }
 
-    if (is_not_owner_of_project(user, ticker)) {
+    if (await is_not_owner_of_project(user, ticker)) {
         logger.error(`New leave project request ... FAILED`);
         return show_error(
             `Missing owner rights`,
@@ -35,8 +35,8 @@ export function leave_project(interaction: ChatInputCommandInteraction): EmbedBu
         );
     }
 
-    project.owners_credentials.delete(user.id);
-    bundle_market.projects.set(ticker, project);
+    project.owners_credentials[user.id] = undefined;
+    await projects.set(ticker, project);
 
     logger.info(`New leave project request ... SUCCESS`);
     return show_success(`Owner has successfully been added`);

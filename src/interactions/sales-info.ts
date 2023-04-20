@@ -6,9 +6,9 @@ import { show_sales_info } from '../embeds/show-sales-info';
 import { does_not_project_exists, is_ticker_invalid } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 
-export function sales_info(interaction: ChatInputCommandInteraction): EmbedBuilder {
+export async function sales_info(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const ticker = interaction.options.getString('ticker');
-    const bundles = load_bundles({ 
+    const bundles = await load_bundles({ 
         ticker, 
         only_for_sale: true 
     });
@@ -21,7 +21,7 @@ export function sales_info(interaction: ChatInputCommandInteraction): EmbedBuild
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New sales info request ... FAILED`);
         return show_error(
             `Project does not exists`,

@@ -13,19 +13,19 @@ import {
     SlashCommandUserOption 
 } from 'discord.js';
 
-import { logger, market } from './static';
-import { user_info } from './interactions/user-info';
-import { send_money } from './interactions/send-money';
-import { send_items } from './interactions/send-items';
-import { buy_items } from './interactions/buy-items';
-import { sell_items } from './interactions/sell-items';
-import { sales_info } from './interactions/sales-info';
-import { cancel_sale } from './interactions/cancel-sale';
-import { add_items } from './interactions/add-items';
-import { project_overview } from './interactions/project-overview';
-import { create_project } from './interactions/create-project';
-import { add_owner } from './interactions/add-owner';
-import { leave_project } from './interactions/leave-project';
+import { logger, market } from './static.js';
+import { user_info } from './interactions/user-info.js';
+import { send_money } from './interactions/send-money.js';
+import { send_items } from './interactions/send-items.js';
+import { buy_items } from './interactions/buy-items.js';
+import { sell_items } from './interactions/sell-items.js';
+import { sales_info } from './interactions/sales-info.js';
+import { cancel_sale } from './interactions/cancel-sale.js';
+import { add_items } from './interactions/add-items.js';
+import { project_overview } from './interactions/project-overview.js';
+import { create_project } from './interactions/create-project.js';
+import { add_owner } from './interactions/add-owner.js';
+import { leave_project } from './interactions/leave-project.js';
 
 const commands = [
     new SlashCommandBuilder()
@@ -181,32 +181,32 @@ export class Bot {
         })
     }
 
-    private handle_interaction(interaction: ChatInputCommandInteraction): EmbedBuilder {
+    private async handle_interaction(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
         switch (interaction.commandName) {
             case 'user_info':
-                return user_info(interaction);
+                return await user_info(interaction);
             case 'sales_info':
-                return sales_info(interaction);
+                return await sales_info(interaction);
             case 'project_overview':
-                return project_overview();
+                return await project_overview();
             case 'create_project':
-                return create_project(interaction);
+                return await create_project(interaction);
             case 'add_owner':
                 return add_owner(interaction);
             case 'leave_project':
-                return leave_project(interaction);
+                return await leave_project(interaction);
             case 'send_money':
-                return send_money(interaction);
+                return await send_money(interaction);
             case 'send_items':
-                return send_items(interaction);
+                return await send_items(interaction);
             case 'sell_items':
-                return sell_items(interaction);
+                return await sell_items(interaction);
             case 'cancel_sale':
-                return cancel_sale(interaction);
+                return await cancel_sale(interaction);
             case 'buy_items':
-                return buy_items(interaction);
+                return await buy_items(interaction);
             case 'add_items':
-                return add_items(interaction);
+                return await add_items(interaction);
         }
     }
 
@@ -218,9 +218,9 @@ export class Bot {
             market.start();
         });
 
-        this.client.on(Events.InteractionCreate, (interaction: ChatInputCommandInteraction) => {
+        this.client.on(Events.InteractionCreate, async (interaction: ChatInputCommandInteraction) => {
             interaction.reply({
-                embeds: [ this.handle_interaction(interaction) ]
+                embeds: [ await this.handle_interaction(interaction) ]
             });
         });
         

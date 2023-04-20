@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
-import { CustomUser } from '../custom/custom-user';
-import { BundleTables } from '../tables/bundles-table';
+import { CustomUser } from '../custom/custom-user.js';
+import { BundleTables } from '../tables/bundles-table.js';
 
 export function show_user_info(user: CustomUser, bundles_table: BundleTables): EmbedBuilder {
     return new EmbedBuilder()

@@ -6,11 +6,11 @@ import { show_success } from '../embeds/show-success';
 import { does_not_project_exists, is_items_amount_invalid, is_not_owner_of_project, is_ticker_invalid } from '../general/validator';
 import { show_error } from '../embeds/show-error';
 
-export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const user = load_user(interaction.user);
+export async function add_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const user = await load_user(interaction.user);
     const ticker = interaction.options.getString('ticker');
     const items_amount = interaction.options.getInteger('items_amount');
-    const user_bundle = load_bundle(user, ticker);
+    const user_bundle = await load_bundle(user, ticker);
 
     if (is_ticker_invalid(ticker)) {
         logger.error(`New add items request ... FAILED`);
@@ -28,7 +28,7 @@ export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilde
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New add items request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -36,7 +36,7 @@ export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilde
         );
     }
 
-    if (is_not_owner_of_project(user, ticker)) {
+    if (await is_not_owner_of_project(user, ticker)) {
         logger.error(`New add items request ... FAILED`);
         return show_error(
             `Missing owner rights`,
@@ -45,7 +45,7 @@ export function add_items(interaction: ChatInputCommandInteraction): EmbedBuilde
     }
 
     user_bundle.items_amount += items_amount;
-    bundle_market.bundles.set(`${user.id}::${ticker}`, user_bundle);
+    await bundles.set(`${user.id}::${ticker}`, user_bundle);
 
     logger.info(`New add items request ... SUCCESS`);
     return show_success(`Amout of items has successfully been increased`);

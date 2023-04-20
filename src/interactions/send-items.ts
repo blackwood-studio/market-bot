@@ -6,13 +6,13 @@ import { show_error } from '../embeds/show-error';
 import { load_bundle } from '../general/load-bundle';
 import { show_success } from '../embeds/show-success';
 
-export function send_items(interaction: ChatInputCommandInteraction): EmbedBuilder {
-    const source = load_user(interaction.user);
-    const target = load_user(interaction.options.getUser('target'));
+export async function send_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
+    const source = await load_user(interaction.user);
+    const target = await load_user(interaction.options.getUser('target'));
     const ticker = interaction.options.getString('ticker');
     const items_amount = interaction.options.getInteger('items_amount');
-    const source_bundle = load_bundle(source, ticker);
-    const target_bundle = load_bundle(target, ticker);
+    const source_bundle = await load_bundle(source, ticker);
+    const target_bundle = await load_bundle(target, ticker);
 
     if (is_user_bot(target)) {
         logger.error(`New send item request ... FAILED`);
@@ -46,7 +46,7 @@ export function send_items(interaction: ChatInputCommandInteraction): EmbedBuild
         );
     }
 
-    if (does_not_project_exists(ticker)) {
+    if (await does_not_project_exists(ticker)) {
         logger.error(`New send items request ... FAILED`);
         return show_error(
             `Project does not exists`,
@@ -65,8 +65,8 @@ export function send_items(interaction: ChatInputCommandInteraction): EmbedBuild
     source_bundle.items_amount -= items_amount;
     target_bundle.items_amount += items_amount;
 
-    bundle_market.bundles.set(`${source.id}::${ticker}`, source_bundle);
-    bundle_market.bundles.set(`${target.id}::${ticker}`, target_bundle);
+    await bundles.set(`${source.id}::${ticker}`, source_bundle);
+    await bundles.set(`${target.id}::${ticker}`, target_bundle);
 
     logger.info(`New send money request ... SUCCESS`);
     return show_success(`Items has successfully been sent`);

@@ -1,10 +1,10 @@
-import { CustomUser } from './custom/custom-user';
-import { round_number } from './general/round';
-import { logger, users } from './static';
+import { CustomUser } from './custom/custom-user.js';
+import { round_number } from './general/round.js';
+import { logger, users } from './static.js';
 
 export class Market {
     private switch_session(): void {
-        users.forEach((user: CustomUser) => {
+        users.for_each((user: CustomUser) => {
             user.money_amount = round_number(user.money_amount + Number(process.env.PAYOUT_AMOUNT));
             users.set(user.id, user);
         })

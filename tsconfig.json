@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es2022",
         "lib": [
             "dom"
         ],
-        "target": "es2015",
+        "target": "es2022",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
+        "moduleResolution": "nodenext",
         "outDir": "./build",
         "sourceMap": false
     },
