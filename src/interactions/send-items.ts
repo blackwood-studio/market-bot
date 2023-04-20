@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user';
-import { bundle_market, logger } from '../static';
-import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_source_target, is_ticker_invalid, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
-import { load_bundle } from '../general/load-bundle';
-import { show_success } from '../embeds/show-success';
+import { load_user } from '../general/load-user.js';
+import { bundles, logger } from '../static.js';
+import { does_not_project_exists, has_not_enough_items, is_items_amount_invalid, is_source_target, is_ticker_invalid, is_user_bot } from '../general/validator.js';
+import { show_error } from '../embeds/show-error.js';
+import { load_bundle } from '../general/load-bundle.js';
+import { show_success } from '../embeds/show-success.js';
 
 export async function send_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const source = await load_user(interaction.user);
