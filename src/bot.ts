@@ -192,7 +192,7 @@ export class Bot {
             case 'create_project':
                 return await create_project(interaction);
             case 'add_owner':
-                return add_owner(interaction);
+                return await add_owner(interaction);
             case 'leave_project':
                 return await leave_project(interaction);
             case 'send_money':
