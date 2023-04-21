@@ -1,11 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { load_user } from '../general/load-user.js';
-import { logger } from '../static.js';
-import { show_error } from '../embeds/show-error.js';
-import { show_user_info } from '../embeds/show-user-info.js';
-import { is_user_bot } from '../general/validator.js';
-import { bundles_to_table } from '../tables/bundles-table.js';
-import { load_bundles } from '../general/load-bundle.js';
+import { load_user } from '../general/load-user';
+import { logger } from '../static';
+import { show_error } from '../embeds/show-error';
+import { show_user_info } from '../embeds/show-user-info';
+import { is_user_bot } from '../general/validator';
+import { bundles_to_table } from '../tables/bundles-table';
+import { load_bundles } from '../general/load-bundle';
 
 export async function user_info(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const target = await load_user(interaction.options.getUser('target'));

@@ -1,10 +1,10 @@
 import { Logger } from 'tslog';
-import { CustomUser } from './custom/custom-user.js';
-import { Market } from './market.js';
-import { Bundle } from './interfaces/bundle.js';
-import { Project } from './interfaces/project.js';
+import { CustomUser } from './custom/custom-user';
+import { Market } from './market';
+import { Bundle } from './interfaces/bundle';
+import { Project } from './interfaces/project';
 import { createClient } from 'redis';
-import { RedisClient } from './redis-client.js';
+import { RedisClient } from './redis-client';
 
 export const logger = new Logger({
     prettyLogTemplate: '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t{{name}}'

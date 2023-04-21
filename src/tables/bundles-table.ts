@@ -1,4 +1,4 @@
-import { Bundle } from '../interfaces/bundle.js';
+import { Bundle } from '../interfaces/bundle';
 
 export interface BundleTables {
     tickers: string,

@@ -1,6 +1,6 @@
-import { CustomUser } from './custom/custom-user.js';
-import { round_number } from './general/round.js';
-import { logger, users } from './static.js';
+import { CustomUser } from './custom/custom-user';
+import { round_number } from './general/round';
+import { logger, users } from './static';
 
 export class Market {
     private switch_session(): void {

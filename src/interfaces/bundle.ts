@@ -1,4 +1,4 @@
-import { Credentials } from './credentials.js';
+import { Credentials } from './credentials';
 
 export interface Bundle {
     ticker: string,

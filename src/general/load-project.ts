@@ -1,8 +1,8 @@
-import { projects } from '../static.js';
-import { CustomUser } from '../custom/custom-user.js';
-import { Project } from '../interfaces/project.js';
-import { Credentials } from '../interfaces/credentials.js';
-import { CustomMap } from '../custom/custom-map.js';
+import { projects } from '../static';
+import { CustomUser } from '../custom/custom-user';
+import { Project } from '../interfaces/project';
+import { Credentials } from '../interfaces/credentials';
+import { CustomMap } from '../custom/custom-map';
 
 export async function load_project(owner: CustomUser, ticker: string): Promise<Project> {
     const owners_credentials: CustomMap<Credentials> = {};

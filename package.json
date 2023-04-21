@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./build/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node --experimental-specifier-resolution=node .",
     "build": "tsc"
   },
   "type": "module",

@@ -1,4 +1,4 @@
-import { client } from "./static.js";
+import { client } from "./static";
 
 export class RedisClient<V> {
     constructor(
