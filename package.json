@@ -4,8 +4,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "start:dev": "nodemon ./src/index.ts",
-    "build": "tsc"
+    "start:dev": "nodemon ./src/index.ts"
   },
   "type": "module",
   "license": "MIT",
