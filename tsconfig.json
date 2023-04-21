@@ -1,16 +1,13 @@
 {
     "compilerOptions": {
         "module": "es2022",
-        "lib": [
-            "dom"
-        ],
         "target": "es2022",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
         "moduleResolution": "node",
-        "outDir": "./build",
-        "sourceMap": false
+        "sourceMap": false,
+        "noEmit": true
     },
     "include": [
         "src/**/*"
@@ -18,5 +15,9 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts"
-    ]
+    ],
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    }
 }
