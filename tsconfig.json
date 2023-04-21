@@ -6,7 +6,8 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "moduleResolution": "node",
-        "sourceMap": false
+        "sourceMap": false,
+        "noEmit": true
     },
     "include": [
         "src/**/*"
