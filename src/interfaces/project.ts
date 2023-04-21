@@ -1,5 +1,5 @@
-import { CustomMap } from '../custom/custom-map.js';
-import { Credentials } from './credentials.js';
+import { CustomMap } from '../custom/custom-map';
+import { Credentials } from './credentials';
 
 export interface Project {
     ticker: string,

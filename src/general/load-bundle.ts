@@ -1,6 +1,6 @@
-import { Bundle } from '../interfaces/bundle.js';
-import { CustomUser } from '../custom/custom-user.js';
-import { bundles } from '../static.js';
+import { Bundle } from '../interfaces/bundle';
+import { CustomUser } from '../custom/custom-user';
+import { bundles } from '../static';
 
 export interface Filter {
     ticker?: string,

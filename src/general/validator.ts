@@ -1,6 +1,6 @@
-import { CustomUser } from '../custom/custom-user.js';
-import { Bundle } from '../interfaces/bundle.js';
-import { projects } from '../static.js';
+import { CustomUser } from '../custom/custom-user';
+import { Bundle } from '../interfaces/bundle';
+import { projects } from '../static';
 
 export function is_user_bot(user: CustomUser): boolean {
     return user.bot;

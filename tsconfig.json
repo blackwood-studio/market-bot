@@ -8,7 +8,7 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "outDir": "./build",
         "sourceMap": false
     },

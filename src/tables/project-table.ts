@@ -1,5 +1,5 @@
-import { Credentials } from '../interfaces/credentials.js';
-import { Project } from '../interfaces/project.js';
+import { Credentials } from '../interfaces/credentials';
+import { Project } from '../interfaces/project';
 
 export interface ProjectTable {
     tickers: string,

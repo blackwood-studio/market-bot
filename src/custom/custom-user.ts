@@ -1,6 +1,6 @@
 import { User } from 'discord.js';
-import { users } from '../static.js';
-import { Credentials } from '../interfaces/credentials.js';
+import { users } from '../static';
+import { Credentials } from '../interfaces/credentials';
 
 export interface CustomUser extends User {
     money_amount: number,
