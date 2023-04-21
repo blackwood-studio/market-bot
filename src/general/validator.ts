@@ -11,7 +11,8 @@ export function is_source_target(source: CustomUser, target: CustomUser): boolea
 }
 
 export function is_ticker_invalid(ticker: string): boolean {
-    return !/^[A-Z0-9\.]+$/.test(ticker);
+    return ticker.length < 28 &&
+    !/^[A-Z0-9\.]+$/.test(ticker);
 }
 
 export function is_money_amount_invalid(money_amount: number): boolean {

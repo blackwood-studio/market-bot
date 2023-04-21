@@ -15,7 +15,7 @@ export async function cancel_sale(interaction: ChatInputCommandInteraction): Pro
         logger.error(`New cancel sale request ... FAILED`);
         return show_error(
             `Option 'ticker' is invalid`,
-            `Option 'ticker' must follow the pattern A-Z, 0-9 and .`
+            `Option 'ticker' must follow the pattern A-Z, 0-9, . and max length 28`
         );
     }
 
