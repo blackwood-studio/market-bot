@@ -4,7 +4,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "start": "cross-env NODE_ENV=production ts-node ./src/index.ts",
-    "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon -L ./src/index.ts",
     "test-build": "tsc"
   },
   "author": "KuengNoel",
