@@ -13,16 +13,8 @@ services:
     entrypoint: ["npm", "run", "dev"]
     volumes:
       - ./src:/app/src
-    environment:
-      - TOKEN= # Your discord bot token
-      - CLIENT_ID= # Your discord bot client id
-      - REDIS_URL=redis://:thisIsALocalPasswordDoNotUseInProductionLmao@redis:6379
-      - START_CAPITAL=1000.00
-      - START_ITEMS_AMOUNT=100
-      - PAYOUT_AMOUNT=100.00
-      - SESSION_TIME_IN_MINUTES=10
-      - MARKET_OPENING_IN_HOURS=7
-      - MARKET_CLOSING_IN_HOURS=23
+    env_file:
+      - .env
 
   redis:
     image: redis:latest
