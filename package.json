@@ -3,21 +3,31 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "ts-node ./src/index.ts",
-    "start:dev": "nodemon ./src/index.ts",
+    "start": "cross-env NODE_ENV=production ts-node ./src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon -L ./src/index.ts",
     "test-build": "tsc"
+  },
+  "author": "KuengNoel",
+  "contributors": [
+    "KuengNoel",
+    "OG-Jons"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blackwood-studios/market-bot"
   },
   "type": "module",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "ts-node": "^10.9.1",
+    "nodemon": "^2.0.22",
     "typescript": "^5.0.2"
   },
   "dependencies": {
     "@types/node": "^18.15.5",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
-    "nodemon": "^2.0.22",
     "redis": "^4.6.5",
     "tslog": "^4.8.2"
   }

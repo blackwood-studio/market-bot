@@ -1,0 +1,9 @@
+# IDE-Config-Folders
+.idea
+.vscode
+
+# Folders
+node_modules
+
+# Files
+.env
