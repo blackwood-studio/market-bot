@@ -6,8 +6,10 @@ import { Project } from './interfaces/project';
 import { createClient } from 'redis';
 import { RedisClient } from './redis-client';
 
+const logTime = process.env.NODE_ENV === 'development' ? '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}' : '';
+
 export const logger = new Logger({
-    prettyLogTemplate: '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t{{name}}'
+    prettyLogTemplate: `${logTime}\t{{logLevelName}}\t{{name}}`
 });
 
 export const client = createClient({
