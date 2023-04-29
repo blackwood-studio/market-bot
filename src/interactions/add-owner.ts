@@ -2,58 +2,61 @@ import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { logger, projects } from '../static';
 import { show_success } from '../embeds/show-success';
-import { does_not_project_exists, is_not_owner_of_project, is_source_target, is_ticker_invalid, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { does_project_not_exists, is_not_owner_of_project, is_target_bot, is_target_source, is_ticker_invalid } from '../general/validator';
+import { ErrorCode, show_error } from '../embeds/show-error';
+import { Parameters } from '../general/parameters';
 import { load_project } from '../general/load-project';
 
 export async function add_owner(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
-    const source = await load_user(interaction.user);
-    const target = await load_user(interaction.options.getUser('target'));
-    const ticker = interaction.options.getString('ticker');
-    const project = await load_project(source, ticker);
+    const parameters: Parameters = {}
 
-    if (is_ticker_invalid(ticker)) {
+    parameters.source = await load_user(interaction.user);
+    parameters.target = await load_user(interaction.options.getUser('target'));
+    parameters.ticker = interaction.options.getString('ticker');
+    parameters.project = await load_project(parameters.source, parameters.ticker);
+
+    if (is_target_bot(parameters.target)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
-            `Option 'ticker' is invalid`,
-            `Option 'ticker' must follow the pattern A-Z, 0-9, . and max length 28`
+            ErrorCode.IS_BOT,
+            parameters
         );
     }
 
-    if (is_user_bot(target)) {
+    if (is_target_source(parameters.target, parameters.source)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Option 'target' can only be a real user`
+            ErrorCode.TARGET_IS_SOURCE,
+            parameters
         );
     }
 
-    if (is_source_target(source, target)) {
-        logger.error(`New add owner request ... FAILED`);
+    if (is_ticker_invalid(parameters.ticker)) {
+        logger.error(`New add items request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Cannot choose yourself as 'target'`
+            ErrorCode.INVALID_TICKER,
+            parameters
         );
     }
 
-    if (await does_not_project_exists(ticker)) {
+    if (await does_project_not_exists(parameters.ticker)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
-            `Project does not exists`,
-            `Project '${ticker}' could not be found`
+            ErrorCode.PROJECT_NOT_EXISTS,
+            parameters
         );
     }
 
-    if (await is_not_owner_of_project(source, ticker)) {
+    if (await is_not_owner_of_project(parameters.source, parameters.ticker)) {
         logger.error(`New add owner request ... FAILED`);
         return show_error(
-            `Missing owner rights`,
-            `User '${source.username}' is not owner of '${ticker}'`
+            ErrorCode.NOT_OWNER_OF_PROJECT,
+            parameters
         );
     }
 
-    project.owners_credentials[target.id] = target.credentials;
-    await projects.set(ticker, project);
+    parameters.project.owners_credentials[parameters.target.id] = parameters.target.credentials;
+    await projects.set(parameters.ticker, parameters.project);
 
     logger.info(`New add owner request ... SUCCESS`);
     return show_success(`Owner has successfully been added`);

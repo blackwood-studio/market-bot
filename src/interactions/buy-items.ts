@@ -1,81 +1,84 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { bundles, logger, users } from '../static';
-import { does_not_project_exists, has_not_enough_money, is_source_target, is_ticker_invalid, is_user_bot, items_are_not_for_sale } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { does_project_not_exists, has_not_enough_money, is_target_bot, is_target_source, is_ticker_invalid, items_are_not_for_sale } from '../general/validator';
+import { ErrorCode, show_error } from '../embeds/show-error';
 import { show_success } from '../embeds/show-success';
 import { load_bundle } from '../general/load-bundle';
 import { round_number } from '../general/round';
+import { Parameters } from '../general/parameters';
 
 export async function buy_items(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
-    const source = await load_user(interaction.user);
-    const target = await load_user(interaction.options.getUser('target'));
-    const ticker = interaction.options.getString('ticker');
-    const source_bundle = await load_bundle(source, ticker);
-    const target_bundle = await load_bundle(target, ticker);
-    const price = round_number(target_bundle.price_per_item * target_bundle.items_amount_for_sale);
+    const parameters: Parameters = {}
 
-    if (is_ticker_invalid(ticker)) {
+    parameters.source = await load_user(interaction.user);
+    parameters.target = await load_user(interaction.options.getUser('target'));
+    parameters.ticker = interaction.options.getString('ticker');
+    parameters.source_bundle = await load_bundle(parameters.source, parameters.ticker);
+    parameters.target_bundle = await load_bundle(parameters.target, parameters.ticker);
+    parameters.price = round_number(parameters.target_bundle.price_per_item * parameters.target_bundle.items_amount_for_sale);
+
+    if (is_target_bot(parameters.target)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
-            `Option 'ticker' is invalid`,
-            `Option 'ticker' must follow the pattern A-Z, 0-9, . and max length 28`
+            ErrorCode.IS_BOT,
+            parameters
         );
     }
 
-    if (is_user_bot(target)) {
+    if (is_target_source(parameters.target, parameters.source)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Option 'target' can only be a real user`
+            ErrorCode.TARGET_IS_SOURCE,
+            parameters
         );
     }
 
-    if (is_source_target(source, target)) {
-        logger.error(`New buy item request ... FAILED`);
+    if (is_ticker_invalid(parameters.ticker)) {
+        logger.error(`New add items request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Cannot choose yourself as 'target'`
+            ErrorCode.INVALID_TICKER,
+            parameters
         );
     }
 
-    if (await does_not_project_exists(ticker)) {
+    if (await does_project_not_exists(parameters.ticker)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
-            `Project does not exists`,
-            `Project '${ticker}' could not be found`
+            ErrorCode.PROJECT_NOT_EXISTS,
+            parameters
         );
     }
 
-    if (has_not_enough_money(source, price)) {
+    if (has_not_enough_money(parameters.source, parameters.price)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
-            `Not enough money`,
-            `User '${source.username}' is ${(price - source.money_amount).toFixed(2)}$ short`
+            ErrorCode.HAS_NOT_ENOUGH_MONEY,
+            parameters
         );
     }
 
-    if (items_are_not_for_sale(target_bundle)) {
+    if (items_are_not_for_sale(parameters.target_bundle)) {
         logger.error(`New buy item request ... FAILED`);
         return show_error(
-            `Items are not for sale`,
-            `User '${target.username}' does not sell '${target_bundle.ticker}'`
+            ErrorCode.ITEMS_ARE_NOT_FOR_SALE,
+            parameters
         );
     }
 
-    source_bundle.items_amount += target_bundle.items_amount_for_sale;
-    target_bundle.items_amount -= target_bundle.items_amount_for_sale;
+    parameters.source_bundle.items_amount += parameters.target_bundle.items_amount_for_sale;
+    parameters.target_bundle.items_amount -= parameters.target_bundle.items_amount_for_sale;
     
-    source.money_amount = round_number(source.money_amount - price);
-    target.money_amount = round_number(target.money_amount + price);
+    parameters.source.money_amount = round_number(parameters.source.money_amount - parameters.price);
+    parameters.target.money_amount = round_number(parameters.target.money_amount + parameters.price);
 
-    target_bundle.items_amount_for_sale = 0;
+    parameters.target_bundle.items_amount_for_sale = 0;
 
-    await bundles.set(`${source.id}::${ticker}`, source_bundle);
-    await bundles.set(`${target.id}::${ticker}`, target_bundle);
+    await bundles.set(`${parameters.source.id}::${parameters.ticker}`, parameters.source_bundle);
+    await bundles.set(`${parameters.target.id}::${parameters.ticker}`, parameters.target_bundle);
 
-    await users.set(source.id, source);
-    await users.set(target.id, target);
+    await users.set(parameters.source.id, parameters.source);
+    await users.set(parameters.target.id, parameters.target);
 
     logger.info(`New send money request ... SUCCESS`);
     return show_success(`Purchase was successful`);

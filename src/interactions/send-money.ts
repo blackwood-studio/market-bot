@@ -1,53 +1,56 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { load_user } from '../general/load-user';
 import { logger, users } from '../static';
-import { has_not_enough_money, is_money_amount_invalid, is_source_target, is_user_bot } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { has_not_enough_money, is_money_amount_invalid, is_target_bot, is_target_source } from '../general/validator';
+import { ErrorCode, show_error } from '../embeds/show-error';
 import { round_number } from '../general/round';
 import { show_success } from '../embeds/show-success';
+import { Parameters } from '../general/parameters';
 
 export async function send_money(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
-    const source = await load_user(interaction.user);
-    const target = await load_user(interaction.options.getUser('target'));
-    const money_amount = interaction.options.getNumber('money_amount');
+    const parameters: Parameters = {}
 
-    if (is_user_bot(target)) {
+    parameters.source = await load_user(interaction.user);
+    parameters.target = await load_user(interaction.options.getUser('target'));
+    parameters.money_amount = interaction.options.getNumber('money_amount')
+
+    if (is_target_bot(parameters.target)) {
         logger.error(`New send money request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Option 'target' can only be a real user`
+            ErrorCode.IS_BOT,
+            parameters
         );
     }
 
-    if (is_source_target(source, target)) {
+    if (is_target_source(parameters.source, parameters.target)) {
         logger.error(`New send money request ... FAILED`);
         return show_error(
-            `Option 'target' is invalid`,
-            `Cannot choose yourself as 'target'`
+            ErrorCode.TARGET_IS_SOURCE,
+            parameters
         );
     }
 
-    if (is_money_amount_invalid(money_amount)) {
+    if (is_money_amount_invalid(parameters.money_amount)) {
         logger.error(`New send money request ... FAILED`);
         return show_error(
-            `Option 'money_amount' is invalid`,
-            `Option 'money_amount' cannot be negative or zero`
+            ErrorCode.INVALID_MONEY_AMOUNT,
+            parameters
         );
     }
 
-    if (has_not_enough_money(source, money_amount)) {
+    if (has_not_enough_money(parameters.source, parameters.money_amount)) {
         logger.error(`New send money request ... FAILED`);
         return show_error(
-            `Not enough money`,
-            `User '${source.username}' is ${(money_amount - source.money_amount).toFixed(2)}$ short`
+            ErrorCode.HAS_NOT_ENOUGH_MONEY,
+            parameters
         );
     }
 
-    source.money_amount = round_number(source.money_amount - money_amount);
-    target.money_amount = round_number(target.money_amount + money_amount);
+    parameters.source.money_amount = round_number(parameters.source.money_amount - parameters.money_amount);
+    parameters.target.money_amount = round_number(parameters.target.money_amount + parameters.money_amount);
 
-    await users.set(source.id, source);
-    await users.set(target.id, target);
+    await users.set(parameters.source.id, parameters.source);
+    await users.set(parameters.target.id, parameters.target);
 
     logger.info(`New send money request ... SUCCESS`);
     return show_success(`Money has successfully been sent`);

@@ -3,32 +3,35 @@ import { logger } from '../static';
 import { bundles_to_table } from '../tables/bundles-table';
 import { load_bundles } from '../general/load-bundle';
 import { show_sales_info } from '../embeds/show-sales-info';
-import { does_not_project_exists, is_ticker_invalid } from '../general/validator';
-import { show_error } from '../embeds/show-error';
+import { does_project_not_exists, is_ticker_invalid } from '../general/validator';
+import { ErrorCode, show_error } from '../embeds/show-error';
+import { Parameters } from '../general/parameters';
 
 export async function sales_info(interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
-    const ticker = interaction.options.getString('ticker');
-    const bundles = await load_bundles({ 
-        ticker, 
-        only_for_sale: true 
+    const parameters: Parameters = {}
+
+    parameters.ticker = interaction.options.getString('ticker');
+    parameters.bundles = await load_bundles({
+        ticker: parameters.ticker,
+        only_for_sale: true
     });
 
-    if (is_ticker_invalid(ticker)) {
-        logger.error(`New sales info request ... FAILED`);
+    if (is_ticker_invalid(parameters.ticker)) {
+        logger.error(`New add items request ... FAILED`);
         return show_error(
-            `Option 'ticker' is invalid`,
-            `Option 'ticker' must follow the pattern A-Z, 0-9, . and max length 28`
+            ErrorCode.INVALID_TICKER,
+            parameters
         );
     }
 
-    if (await does_not_project_exists(ticker)) {
+    if (await does_project_not_exists(parameters.ticker)) {
         logger.error(`New sales info request ... FAILED`);
         return show_error(
-            `Project does not exists`,
-            `Project '${ticker}' could not be found`
+            ErrorCode.PROJECT_NOT_EXISTS,
+            parameters
         );
     }
 
     logger.info(`New sales info request ... SUCCESS`);
-    return show_sales_info(bundles_to_table(bundles));
+    return show_sales_info(bundles_to_table(parameters.bundles));
 }
