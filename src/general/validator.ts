@@ -2,12 +2,12 @@ import { CustomUser } from '../custom/custom-user';
 import { Bundle } from '../interfaces/bundle';
 import { projects } from '../static';
 
-export function is_user_bot(user: CustomUser): boolean {
-    return user.bot;
+export function is_target_bot(target: CustomUser): boolean {
+    return target.bot;
 }
 
-export function is_source_target(source: CustomUser, target: CustomUser): boolean {
-    return source.id === target.id;
+export function is_target_source(target: CustomUser, source: CustomUser): boolean {
+    return target.id === source.id;
 }
 
 export function is_ticker_invalid(ticker: string): boolean {
@@ -46,6 +46,6 @@ export async function does_project_exists(ticker: string): Promise<boolean> {
     return await projects.get(ticker) !== null;
 }
 
-export async function does_not_project_exists(ticker: string): Promise<boolean> {
+export async function does_project_not_exists(ticker: string): Promise<boolean> {
     return await projects.get(ticker) === null;
 }
